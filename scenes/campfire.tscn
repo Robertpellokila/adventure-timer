@@ -1,0 +1,69 @@
+[gd_scene format=3 uid="uid://clxl4io32p1cq"]
+
+[ext_resource type="Texture2D" uid="uid://cnadgjvrjf7bh" path="res://assets/tileset/3 Animated Objects/2 Campfire/2.png" id="1_m47ar"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m47ar"]
+atlas = ExtResource("1_m47ar")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_54scn"]
+atlas = ExtResource("1_m47ar")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yfrnb"]
+atlas = ExtResource("1_m47ar")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8pk5p"]
+atlas = ExtResource("1_m47ar")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m6xh0"]
+atlas = ExtResource("1_m47ar")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1v5ef"]
+atlas = ExtResource("1_m47ar")
+region = Rect2(160, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_63vhv"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m47ar")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_54scn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yfrnb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8pk5p")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m6xh0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1v5ef")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_w2pjx"]
+
+[node name="campfire" type="Area2D" unique_id=1807741542]
+collision_mask = 2
+collision_priority = 3.0
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=398397884]
+position = Vector2(0, -16)
+sprite_frames = SubResource("SpriteFrames_63vhv")
+autoplay = "default"
+frame_progress = 0.2010901
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2145120565]
+position = Vector2(0, -8)
+shape = SubResource("CircleShape2D_w2pjx")
