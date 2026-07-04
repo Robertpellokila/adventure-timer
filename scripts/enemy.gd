@@ -12,7 +12,7 @@ const ACCEL = 500
 const ATTACK_RANGE = 32.0
 const ATTACK_DAMAGE = 10
 const ATTACK_COOLDOWN = 0.8
-const POINTS = 2
+const POINTS = 100
 
 var player: Node2D = null
 var max_hp = 100
