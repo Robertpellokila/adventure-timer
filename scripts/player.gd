@@ -6,6 +6,7 @@ extends CharacterBody2D
 @onready var hp_bar: ProgressBar = $HpBar
 @onready var fade_timer: Timer = $FadeTimer
 
+
 const SPEED = 150
 const ACCEL = 800
 
@@ -13,6 +14,8 @@ var max_hp = 100
 var hp = 100
 var is_dead = false
 var is_invincible = false
+
+var respawn_position: Vector2
 
 var damage_scene = preload("res://scenes/damaged_number.tscn")
 
@@ -55,6 +58,7 @@ func _ready():
 	fade_timer.wait_time = 2.0
 	fade_timer.one_shot = true
 	fade_timer.timeout.connect(_on_fade_timeout)
+	respawn_position = global_position   # ⬅️ tambahan: simpan posisi awal player
 
 
 # =====================================================
@@ -226,7 +230,6 @@ func take_damage(amount, attacker_position = null):
 
 	var damage_type = "damage"
 
-	# CRITICAL HIT
 	if randf() < crit_chance:
 		amount *= 2
 		damage_type = "crit"
@@ -239,24 +242,26 @@ func take_damage(amount, attacker_position = null):
 		anim.play("hurt")
 
 	hp -= amount
-	print("HP:", hp)
-	hp_bar.value = hp
+	hp = max(hp, 0)
 
+	print("HP:", hp)
+	update_hp()
 	show_damage(amount, damage_type)
 
-	# Knockback
+	if hp <= 0:
+		die()
+		return
+
 	if attacker_position:
 		var direction = (global_position - attacker_position).normalized()
 		knockback_velocity = direction * knockback_force
 
 	start_invincibility()
 
-	if hp <= 0:
-		die()
-	else:
-		await anim.animation_finished
-		if not is_dead:
-			current_state = State.MOVE
+	await anim.animation_finished
+
+	if not is_dead:
+		current_state = State.MOVE
 # =====================================================
 # KNOCKBACK
 # =====================================================
@@ -303,11 +308,31 @@ func _on_InvincibleTimer_timeout():
 # =====================================================
 
 func die():
+	if is_dead:
+		return
+
 	is_dead = true
 	current_state = State.DEAD
 	velocity = Vector2.ZERO
+	skill_hitbox.monitoring = false
 
 	anim.play("death")
 	await anim.animation_finished
 
 	print("PLAYER DEAD")
+
+	Global.lose_life()
+
+	if Global.lives > 0:
+		await get_tree().create_timer(1.0).timeout
+		respawn()
+	# kalau lives sudah 0, Global.lose_life() akan otomatis pindah ke scene game_over
+func respawn():
+	is_dead = false
+	current_state = State.MOVE
+	global_position = respawn_position
+	hp = max_hp
+	update_hp()
+	anim.modulate.a = 1.0
+	anim.play("side_idle")
+	start_invincibility()

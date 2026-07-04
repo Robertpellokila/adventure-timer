@@ -902,9 +902,8 @@ height = 14.0
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1073830747]
 position = Vector2(11, -19)
 sprite_frames = SubResource("SpriteFrames_l5p6t")
-animation = &"idle"
+animation = &"skill3"
 autoplay = "idle"
-frame_progress = 0.31779775
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1371849819]
 position = Vector2(2, -9)
